@@ -7,8 +7,11 @@ if [ "$#" -lt 1 ];then
 	exit 0
 fi
 
+echo "installing anaconda3"
+
 #install dep
-sudo apt-get update && apt-get install -y bzip2
+sudo apt-get update >/dev/null
+sudo apt-get install -y bzip2 >/dev/null
 
 DEST=$1/anaconda3
 if [ -d $DEST ]; then
@@ -19,9 +22,9 @@ mkdir -p $DEST
 
 INST_FILE=Anaconda3-5.2.0-Linux-x86_64.sh
 #-P: prefix, where there file will be save to
-wget -P $DEST --tries=10 https://repo.continuum.io/archive/$INST_FILE 
+wget -q -P $DEST --tries=10 https://repo.continuum.io/archive/$INST_FILE 
 #-b:bacth mode, -f: no error if install prefix already exists
-bash $DEST/$INST_FILE -b -f -p $DEST
+bash $DEST/$INST_FILE -b -f -p $DEST >/dev/null
 rm $DEST/$INST_FILE
 
 #add PATH

@@ -10,13 +10,15 @@ if [ "$#" -lt 1 ];then
 	exit 0
 fi
 
+echo "installing singularity"
+
 #install dep:
-sudo apt-get update && \
-    sudo apt-get install -y \
+sudo apt-get update >/dev/null
+sudo apt-get install -y \
     python \
     dh-autoreconf \
     build-essential \
-    libarchive-dev
+    libarchive-dev >/dev/null
 
 #remove older version 
 S_DIR=$1/singularity
@@ -27,13 +29,13 @@ fi
 mkdir -p $1
 
 pushd /tmp
-wget https://github.com/singularityware/singularity/releases/download/$VERSION/singularity-$VERSION.tar.gz
+wget -q https://github.com/singularityware/singularity/releases/download/$VERSION/singularity-$VERSION.tar.gz
 tar xvf singularity-$VERSION.tar.gz
 cd singularity-$VERSION
 ./configure --prefix=$S_DIR
-make
-make install
-make clean
+make >/dev/null
+make install >/dev/null
+make clean >/dev/null
 popd
 
 # add PATH

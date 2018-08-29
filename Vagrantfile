@@ -25,6 +25,9 @@ Vagrant.configure("2") do |config|
   # NOTE: This will enable public access to the opened port
   # config.vm.network "forwarded_port", guest: 80, host: 8080
 
+  #fix to 2222 for mobaXterm
+  config.vm.network "forwarded_port", guest: 2, host: 2222
+
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
@@ -43,7 +46,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "D:\\", "/mnt/hgfs/d"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -64,9 +67,9 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-     apt-get update
-     apt-get install -y wget curl git dos2unix tree zip unzip make cmake  bzip2
-     apt-get install -y dcmtk imagemagick
+     apt-get update >/dev/null
+     apt-get install -y wget curl git dos2unix tree zip unzip make cmake  bzip2 >/dev/null
+     apt-get install -y dcmtk imagemagick >/dev/null
    SHELL
 
   # provision
@@ -74,14 +77,15 @@ Vagrant.configure("2") do |config|
 
     #install docker
     shell.path="./linux_install_scripts/install_docker.sh"
-    
+    shell.args=["vagrant"]
+
     ##install install_singularity
     #shell.path="./linux_install_scripts/install_singularity.sh"
     #shell.args=["/opt"]
 
     #install anaconda3
-    shell.path="./linux_install_scripts/install_anaconda3.sh"
-    shell.args=["/opt"]
+    #shell.path="./linux_install_scripts/install_anaconda3.sh"
+    #shell.args=["/opt"]
 
   end
 
